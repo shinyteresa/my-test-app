@@ -108,6 +108,14 @@ export async function createServer(
     })
   );
 
+  app.get('api/products', async (req, res) => {
+    const session = await Shopify.Utils.loadCurrentSession(req, res, app.get('use-online-tokens'))
+
+    const Products = []
+
+    res.status(200).send({products})
+})
+
   app.get("/api/products/count", async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(
       req,

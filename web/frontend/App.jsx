@@ -24,6 +24,10 @@ export default function App() {
                   label: "Page name",
                   destination: "/pagename",
                 },
+              {
+                label: "Test",
+                destination: 'NotFound.jsx'
+              }
               ]}
             />
             <Routes pages={pages} />
