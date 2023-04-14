@@ -12,6 +12,7 @@ import productCreator from "./helpers/product-creator.js";
 import redirectToAuth from "./helpers/redirect-to-auth.js";
 import { BillingInterval } from "./helpers/ensure-billing.js";
 import { AppInstallations } from "./app_installations.js";
+import fetchProducts from "./helpers/fetch-products.js";
 
 const USE_ONLINE_TOKENS = false;
 
@@ -111,7 +112,7 @@ export async function createServer(
   app.get('api/products', async (req, res) => {
     const session = await Shopify.Utils.loadCurrentSession(req, res, app.get('use-online-tokens'))
 
-    const Products = []
+    const Products = await fetchProducts(session)
 
     res.status(200).send({products})
 })
