@@ -6,7 +6,7 @@ import {
   DisplayText,
   TextStyle,
 } from "@shopify/polaris";
-import { Toast } from "@shopify/app-bridge-react";
+import { Toast, useNavigate } from "@shopify/app-bridge-react";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
 export function ProductsCard() {
@@ -14,20 +14,8 @@ export function ProductsCard() {
   const [isLoading, setIsLoading] = useState(true);
   const [toastProps, setToastProps] = useState(emptyToastProps);
   const fetch = useAuthenticatedFetch();
+  const navigate = useNavigate()
 
-  const {
-    data,
-    refetch: refetchProductCount,
-    isLoading: isLoadingCount,
-    isRefetching: isRefetchingCount,
-  } = useAppQuery({
-    url: "/api/products/count",
-    reactQueryOptions: {
-      onSuccess: () => {
-        setIsLoading(false);
-      },
-    },
-  });
 
   const toastMarkup = toastProps.content && !isRefetchingCount && (
     <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
@@ -64,24 +52,14 @@ export function ProductsCard() {
         title="Product Counter"
         sectioned
         primaryFooterAction={{
-          content: "fetch Products",
+          content: "Populate 5 Products",
           onAction: fetchProducts,
           loading: isLoading,
         }}
+        secondaryFooterActions={[{content: 'view all products', onAction: () => navigate({name: 'Product'}, {target: 'new'})}]}
       >
         <TextContainer spacing="loose">
-          <p>
-            Sample products are created with a default title and price. You can
-            remove them at any time.
-          </p>
-          <Heading element="h4">
-            TOTAL PRODUCTS
-            <DisplayText size="medium">
-              <TextStyle variation="strong">
-                {isLoadingCount ? "-" : data.count}
-              </TextStyle>
-            </DisplayText>
-          </Heading>
+         <p>Use this nifty tool to create and update products</p>
         </TextContainer>
       </Card>
     </>
